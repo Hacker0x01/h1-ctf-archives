@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CTFOne Level 5</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_message">State the secret phrase (omit the oh ex)</string>
+</resources>

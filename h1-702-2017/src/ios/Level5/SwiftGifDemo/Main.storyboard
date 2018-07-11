@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dd0-6l-EPW">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--DemoStart-->
+        <scene sceneID="U7d-3H-ZoA">
+            <objects>
+                <viewController title="DemoStart" id="dd0-6l-EPW" customClass="DemoVC" customModule="Level5Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pDj-EP-USu"/>
+                        <viewControllerLayoutGuide type="bottom" id="ODE-rc-V7j"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LrH-1b-b1i">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aqx-oM-KuU" userLabel="Top Image View">
+                                <rect key="frame" x="-4" y="0.0" width="383" height="334"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ku-QN-SKk">
+                                <rect key="frame" x="139" y="318" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Hammer time!"/>
+                                <connections>
+                                    <action selector="hammerTime:" destination="dd0-6l-EPW" eventType="touchUpInside" id="XOR-hn-68b"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="aqx-oM-KuU" secondAttribute="trailing" constant="-20" id="50f-0x-has"/>
+                            <constraint firstItem="aqx-oM-KuU" firstAttribute="leading" secondItem="LrH-1b-b1i" secondAttribute="leadingMargin" constant="-20" id="Vgr-sC-KU3"/>
+                            <constraint firstItem="aqx-oM-KuU" firstAttribute="top" secondItem="LrH-1b-b1i" secondAttribute="topMargin" id="axK-Wr-ItU"/>
+                            <constraint firstItem="aqx-oM-KuU" firstAttribute="bottom" secondItem="LrH-1b-b1i" secondAttribute="centerY" id="oRs-rd-KiN"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="hammerButton" destination="4ku-QN-SKk" id="qRe-QO-TFI"/>
+                        <outlet property="topImageView" destination="aqx-oM-KuU" id="ptN-cW-EqU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xZ2-k8-JvR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="332" y="-114"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="WhH-Oe-Z78">
+            <objects>
+                <viewController storyboardIdentifier="viewOfViewsController" id="kKp-lA-suN" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dpk-iD-hW4"/>
+                        <viewControllerLayoutGuide type="bottom" id="lPF-Aw-opY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HXQ-oc-9GC" customClass="ViewOfViews" customModule="Level5Demo" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9sN-c4-hoV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1222" y="-104"/>
+        </scene>
+    </scenes>
+</document>

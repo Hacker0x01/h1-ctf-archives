@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Challenge 4</string>
+    <string name="Label">Maze</string>
+    <string name="Start">Start</string>
+    <string name="More">More</string>
+    <string name="start">Start</string>
+    <string name="Inf">Information</string>
+    <string name="share">Share</string>
+    <string name="game_info">Forked from https://github.com/Vitaliy336/Maze and sprinkled some CTF dust on it. Thanks Vitaliy!</string>
+</resources>

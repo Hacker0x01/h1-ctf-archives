@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2605841336386950620965384F2CEBCCD7992398" : 9223372036854775807,
+    "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA" : 0,
+    "63716F5A37012CEB01BFD75A737959F466A59FBC" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "296869D0-C15D-4327-A221-B75F7F6D6F5B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2605841336386950620965384F2CEBCCD7992398" : "..\/..",
+    "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA" : "Level5\/",
+    "63716F5A37012CEB01BFD75A737959F466A59FBC" : "security-check\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SwiftGif",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SwiftGif.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "code.uber.internal:engsec\/mobilesec",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2605841336386950620965384F2CEBCCD7992398"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/project-imas\/security-check.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "63716F5A37012CEB01BFD75A737959F466A59FBC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:bahlo\/SwiftGif.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CC1CB80635DAA6EE75D19EA4BDDA420AB94DBCEA"
+    }
+  ]
+}

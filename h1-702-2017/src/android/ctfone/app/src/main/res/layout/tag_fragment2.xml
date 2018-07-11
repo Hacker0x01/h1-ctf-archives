@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/jurassicparkmagicword1">
+
+    <Button
+        android:text="GETHASHED"
+        android:layout_height="300dp"
+        android:id="@+id/hashmebutton"
+        android:layout_marginTop="19dp"
+        android:layout_width="30dp" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:id="@+id/hashText"
+        android:layout_alignTop="@+id/hashmebutton"
+        android:layout_toRightOf="@+id/hashmebutton"
+        android:layout_toEndOf="@+id/hashmebutton"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+</RelativeLayout>

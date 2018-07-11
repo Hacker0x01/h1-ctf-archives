@@ -1,0 +1,98 @@
+#include <jni.h>
+#include <string>
+#include "sodium.h"
+
+// repro: go to ctfone/tools
+// $ ./generate_flag_four.py cApwN{w3ll_7h47_w45_sup3r_345y} CAPWN{CRYP706R4PHY_15_H4RD_BR0} cApwN{1_4m_numb3r_7hr33} cApwN{w1nn3r_w1nn3r_ch1ck3n_d1nn3r!}
+const unsigned char ciphertext_flag4[] = {72, 4, 109, 180, 140, 138, 109, 87, 76, 197, 75, 65, 209, 220, 178, 192, 144, 29, 226, 107, 133, 21, 37, 253, 145, 31, 98, 0, 69, 169, 84, 90, 133, 117, 165, 252};
+
+extern "C"
+jstring
+Java_com_h1702ctf_ctfone_MonteCarlo_functionnameLeftbraceOneCommaTwoCommaThreeCommaRightbraceFour(
+        JNIEnv *env,
+        jobject /* this _unused_*/,
+        jstring flagOne,
+        jstring flagTwo,
+        jstring flagThree) {
+
+
+    size_t ciphertext_len = sizeof ciphertext_flag4;
+
+    const char *flagOneChars = env->GetStringUTFChars(flagOne, 0);
+    const char *flagTwoChars = env->GetStringUTFChars(flagTwo, 0);
+    const char *flagThreeChars = env->GetStringUTFChars(flagThree, 0);
+
+    size_t flagOneLen = strlen(flagOneChars);
+    size_t flagTwoLen = strlen(flagTwoChars);
+    size_t flagThreeLen = strlen(flagThreeChars);
+
+    unsigned char hashOne[crypto_generichash_BYTES];
+    unsigned char hashTwo[crypto_generichash_BYTES];
+    unsigned char hashThree[crypto_generichash_BYTES];
+
+
+    crypto_generichash(hashOne, sizeof hashOne,
+                       (const unsigned char*)flagOneChars, flagOneLen,
+                       NULL, 0);
+    crypto_generichash(hashTwo, sizeof hashTwo,
+                       (const unsigned char*)flagTwoChars, flagTwoLen,
+                       NULL, 0);
+    crypto_generichash(hashThree, sizeof hashThree,
+                       (const unsigned char*)flagThreeChars, flagThreeLen,
+                       NULL, 0);
+
+    // first 12 bits of blake2b hash of flag 1 | first 12 bites of blake2b of flag 2 is the nonce
+    unsigned char nonce[crypto_stream_NONCEBYTES];
+    memcpy(nonce, hashOne, 12);
+    memcpy(&nonce[12], hashTwo, 12);
+
+
+    // blake2b hash flag 3 is the key -- both 32 bytes
+    unsigned char key[crypto_stream_KEYBYTES];
+    memcpy(key, hashThree, sizeof key);
+
+    unsigned char decrypted[ciphertext_len + 1];
+
+    crypto_stream_xsalsa20_xor(decrypted, (const unsigned char *) ciphertext_flag4, ciphertext_len, nonce, key);
+
+    decrypted[ciphertext_len] = '\0';
+
+    env->ReleaseStringUTFChars(flagOne, flagOneChars);
+    env->ReleaseStringUTFChars(flagOne, flagTwoChars);
+    env->ReleaseStringUTFChars(flagOne, flagThreeChars);
+
+    return env->NewStringUTF((const char *) decrypted);
+}
+
+extern "C"
+jstring
+Java_com_h1702ctf_ctfone_Requestor_hName(JNIEnv *env)
+{
+    char hname[] = "X-Level3-Flag";
+    return env->NewStringUTF(hname);
+}
+
+// repro: echo "cApwN{1_4m_numb3r_7hr33}" | base64 | base64 | base64
+extern "C"
+jstring
+Java_com_h1702ctf_ctfone_Requestor_hVal(JNIEnv *env)
+{
+    char hname[] = "V1RCR2QyUXdOVGROVmpnd1lsWTVkV1JYTVdsTk0wcG1UakpvZVUxNlRqbERaejA5Q2c9PQo=";
+    return env->NewStringUTF(hname);
+}
+
+extern "C"
+void
+Java_com_h1702ctf_ctfone_ArraysArraysArrays_x(JNIEnv *env)
+{
+    jclass cls = env->FindClass("com/h1702ctf/ctfone/Requestor");
+    jmethodID mid = env->GetStaticMethodID(cls, "request", "()V");
+    if (mid == 0)
+        return;
+    env->CallStaticVoidMethod(cls, mid);
+}
+
+jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+
+    return JNI_VERSION_1_6;
+}
