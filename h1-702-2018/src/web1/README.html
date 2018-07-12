@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notes RPC documentation</title>
+
+    <style>
+    html, body {
+      font-family: Open Sans,Arial,sans-serif;
+      font-size: 13px;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Notes RPC documentation</h1>
+
+    <p>
+      This service provides a way to securely store notes. It'll give them the ability to
+      retrieve them at a later point. The service will return random keys associated with the
+      notes. There's no way to retrieve a note once the key has been destroyed. The RPC interface
+      is exposed through the <code>/rpc.php</code> file. A call can be invoked through the
+      <code>method</code> parameter. Each note is stored in a secure file that consists of a unique
+      key, the note, and the epoch of when the note was created.
+    </p>
+
+    <h2>Authentication</h2>
+
+    <p>
+      Authenticating to the service can be done through the <code>Authorization</code> header. When provided
+      a valid JWT, the service will authenticate the user and allow to query metadata, retrieve a note, create new
+      notes, and delete all notes.
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>401</code></strong>
+          </td>
+          <td>
+            Returned when the <code>Authorization</code> header is not present.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>401</code></strong>
+          </td>
+          <td>
+            Returned when the JWT could not be decoded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>401</code></strong>
+          </td>
+          <td>
+            Returned when the JWT algorithm was not recognized.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>401</code></strong>
+          </td>
+          <td>
+            Returned when the user could not be found.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <strong>Example request</strong>
+    <pre>
+GET /rpc.php?method=getNotesMetadata HTTP/1.1
+Host: 159.203.178.9
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.t4M7We66pxjMgRNGg1RvOmWT6rLtA8ZwJeNP-S8pVak
+Accept: application/notes.api.v1+json
+    </pre>
+
+    <hr />
+
+    <h2>Versioning</h2>
+
+    <p>
+      The service is being optimized continuously. A version number can be provided in the <code>Accept</code>
+      header of the request. At this time, only <code>application/notes.api.v1+json</code> is supported.
+      <!--
+        Version 2 is in the making and being tested right now, it includes an optimized file format that
+        sorts the notes based on their unique key before saving them. This allows them to be queried faster.
+        Please do NOT use this in production yet!
+      -->
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>415</code></strong>
+          </td>
+          <td>
+            Returned when no <code>Accept</code> header is provided.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>415</code></strong>
+          </td>
+          <td>
+            Returned when an invalid <code>Accept</code> header is provided.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <strong>Example request</strong>
+    <pre>
+GET /rpc.php?method=getNote&id=d4ac962fb8c300ea0ffe0eaba08f7ad0 HTTP/1.1
+Host: 159.203.178.9
+Accept: application/notes.api.v1+json
+    </pre>
+
+    <hr />
+
+    <h2>RPCs</h2>
+
+    <h3>getNotesMetadata</h3>
+
+    <p>
+      This routine returns metadata about the user's notes.
+    </p>
+
+    <h4>URI parameters</h4>
+
+    <p>
+      <em>None</em>
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>200</code></strong>
+          </td>
+          <td>
+            Returned when the metadata could be queried.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example request</h4>
+
+    <pre>
+GET /rpc.php?method=getNotesMetadata HTTP/1.1
+Host: 159.203.178.9
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.t4M7We66pxjMgRNGg1RvOmWT6rLtA8ZwJeNP-S8pVak
+Accept: application/notes.api.v1+json
+    </pre>
+
+    <h4>Response object</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>count</code></strong>
+          </td>
+          <td>
+            The total number of notes that belong to the user.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>epochs</code></strong>
+          </td>
+          <td>
+            An array of the notes' epochs.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example response</h4>
+
+    <pre>
+HTTP/1.1 200 OK
+Date: Wed, 13 Jun 2018 18:51:34 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Content-Length: 74
+Content-Type: application/json
+
+{"count":4,"epochs":["1528911771","1528911803","1528911533","1528915681"]}
+    </pre>
+
+    <hr />
+
+    <h3>getNote</h3>
+
+    <p>
+      This routine provides a way to retrieve a note.
+    </p>
+
+    <h4>URI parameters</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>id (<em>required</em>)</code></strong>
+          </td>
+          <td>
+            The ID of the note to retrieve.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>404</code></strong>
+          </td>
+          <td>
+            Returned when the note could not be found.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>200</code></strong>
+          </td>
+          <td>
+            Returned when the note was found.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example request</h4>
+
+    <pre>
+GET /rpc.php?method=getNote&id=d4ac962fb8c300ea0ffe0eaba08f7ad0 HTTP/1.1
+Host: 159.203.178.9
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.t4M7We66pxjMgRNGg1RvOmWT6rLtA8ZwJeNP-S8pVak
+Accept: application/notes.api.v1+json
+    </pre>
+
+    <h4>Response object</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>note</code></strong>
+          </td>
+          <td>
+            The contents of the note.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>epoch</code></strong>
+          </td>
+          <td>
+            epoch of when the note was created.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example response</h4>
+
+    <pre>
+HTTP/1.1 200 OK
+Date: Wed, 13 Jun 2018 19:01:59 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Content-Length: 34
+Content-Type: application/json
+
+{"note":"This is my note","epoch":"1528915681"}
+    </pre>
+
+    <hr />
+
+    <h3>createNote</h3>
+
+    <p>
+      This routine provides a way to create a note.
+    </p>
+
+    <h4>URI parameters</h4>
+
+    <p>
+      <em>None</em>
+    </p>
+
+    <h4>JSON body parameters</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>id</code></strong>
+          </td>
+          <td>
+            An optional ID. If not provided, it'll generate a 16 byte random string.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>note (<em>required</em>)</code></strong>
+          </td>
+          <td>
+            The note to be stored.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>406</code></strong>
+          </td>
+          <td>
+            Returned when the <code>Content-Type</code> does not match <code>application/json</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>400</code></strong>
+          </td>
+          <td>
+            Returned when the JSON body could not be decoded.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>400</code></strong>
+          </td>
+          <td>
+            Returned when a note with the same ID exists.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>400</code></strong>
+          </td>
+          <td>
+            Returned when the ID does not match /\A[a-zA-Z0-9]+\z/.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>400</code></strong>
+          </td>
+          <td>
+            Returned when the note does not match /\A[a-zA-Z0-9\s\.\-]+\z/.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><code>201</code></strong>
+          </td>
+          <td>
+            Returned when the note was created.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example request</h4>
+
+    <pre>
+POST /rpc.php?method=createNote HTTP/1.1
+Host: 159.203.178.9
+authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.t4M7We66pxjMgRNGg1RvOmWT6rLtA8ZwJeNP-S8pVak
+Accept: application/notes.api.v1+json
+Content-Type: application/json
+Content-Length: 28
+
+{"note":"This is my note"}
+    </pre>
+
+    <h4>Response object</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>url</code></strong>
+          </td>
+          <td>
+            The URL when the note can be found.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example response</h4>
+
+    <pre>
+HTTP/1.1 201 Created
+Date: Wed, 13 Jun 2018 19:14:07 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Content-Length: 70
+Content-Type: application/json
+
+{"url":"\/rpc.php?method=getNote&id=bc5f8efeb8110192ddd18fcc518ff9af"}
+    </pre>
+
+    <hr />
+
+    <h3>resetNotes</h3>
+
+    <p>
+      This routine provides a way to reset all the notes and seed it with the default notes for the account.
+    </p>
+
+    <h4>URI parameters</h4>
+
+    <p>
+      <em>None</em>
+    </p>
+
+    <h4>Response codes</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>200</code></strong>
+          </td>
+          <td>
+            Returned when the notes were reset.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example request</h4>
+
+    <pre>
+POST /rpc.php?method=resetNotes HTTP/1.1
+Host: 159.203.178.9
+authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.t4M7We66pxjMgRNGg1RvOmWT6rLtA8ZwJeNP-S8pVak
+Accept: application/notes.api.v1+json
+Content-Type: application/json
+    </pre>
+
+    <h4>Response object</h4>
+
+    <p>
+      <table border="1">
+        <tr>
+          <td>
+            <strong><code>reset</code></strong>
+          </td>
+          <td>
+            A boolean whether the notes were reset successfully.
+          </td>
+        </tr>
+      </table>
+    </p>
+
+    <h4>Example response</h4>
+
+    <pre>
+HTTP/1.1 200 OK
+Date: Wed, 13 Jun 2018 19:16:52 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Content-Length: 14
+Content-Type: application/json
+
+{"reset":true}
+    </pre>
+  </body>
+</html>
